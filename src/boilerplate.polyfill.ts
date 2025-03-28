@@ -13,8 +13,9 @@ import type { KeyOfType } from './types';
 
 declare global {
   export type Uuid = string & { _uuidBrand: undefined };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-redundant-type-constituents
-  export type Todo = any & { _todoBrand: undefined };
+
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+  export type Todo = unknown & { _todoBrand?: never };
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   interface Array<T> {
@@ -28,7 +29,6 @@ declare global {
     toPageDto<Dto extends AbstractDto>(
       this: T[],
       pageMetaDto: PageMetaDto,
-      // FIXME make option type visible from entity
       options?: unknown,
     ): PageDto<Dto>;
   }
@@ -51,6 +51,7 @@ declare module 'typeorm' {
       options?: Partial<{ takeAll: boolean; skipCount: boolean }>,
     ): Promise<[Entity[], PageMetaDto]>;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     leftJoinAndSelect<AliasEntity extends AbstractEntity, A extends string>(
       this: SelectQueryBuilder<Entity>,
       property: `${A}.${Exclude<
@@ -62,6 +63,7 @@ declare module 'typeorm' {
       parameters?: ObjectLiteral,
     ): this;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     leftJoin<AliasEntity extends AbstractEntity, A extends string>(
       this: SelectQueryBuilder<Entity>,
       property: `${A}.${Exclude<
@@ -73,6 +75,7 @@ declare module 'typeorm' {
       parameters?: ObjectLiteral,
     ): this;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     innerJoinAndSelect<AliasEntity extends AbstractEntity, A extends string>(
       this: SelectQueryBuilder<Entity>,
       property: `${A}.${Exclude<
@@ -84,6 +87,7 @@ declare module 'typeorm' {
       parameters?: ObjectLiteral,
     ): this;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     innerJoin<AliasEntity extends AbstractEntity, A extends string>(
       this: SelectQueryBuilder<Entity>,
       property: `${A}.${Exclude<
@@ -97,7 +101,9 @@ declare module 'typeorm' {
   }
 }
 
+// eslint-disable-next-line canonical/no-use-extend-native, no-extend-native
 Array.prototype.toDtos = function <
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   Entity extends AbstractEntity<Dto>,
   Dto extends AbstractDto,
 >(options?: unknown): Dto[] {
@@ -108,15 +114,19 @@ Array.prototype.toDtos = function <
   );
 };
 
+// eslint-disable-next-line canonical/no-use-extend-native, no-extend-native
 Array.prototype.getByLanguage = function (languageCode: LanguageCode): string {
   return this.find((translation) => languageCode === translation.languageCode)!
     .text;
 };
 
+// eslint-disable-next-line canonical/no-use-extend-native, no-extend-native
 Array.prototype.toPageDto = function (
   pageMetaDto: PageMetaDto,
+
   options?: unknown,
 ) {
+  // eslint-disable-next-line sonarjs/argument-type
   return new PageDto(this.toDtos(options), pageMetaDto);
 };
 

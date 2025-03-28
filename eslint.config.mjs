@@ -107,6 +107,7 @@ export default tseslint.config(
       'canonical/no-restricted-strings': 'error',
       'canonical/no-use-extend-native': 'error',
       'canonical/prefer-inline-type-import': 'off',
+      "no-extend-native": "error"
     },
   },
   {
