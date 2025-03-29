@@ -21,7 +21,6 @@ import { RoleType } from '../../constants/role-type.ts';
 import { ApiPageResponse } from '../../decorators/api-page-response.decorator.ts';
 import { AuthUser } from '../../decorators/auth-user.decorator.ts';
 import { Auth, UUIDParam } from '../../decorators/http.decorators.ts';
-import { UseLanguageInterceptor } from '../../interceptors/language-interceptor.service.ts';
 import { UserEntity } from '../user/user.entity.ts';
 import { CreatePostDto } from './dtos/create-post.dto.ts';
 import { PostDto } from './dtos/post.dto.ts';
@@ -32,7 +31,7 @@ import { PostService } from './post.service.ts';
 @Controller('posts')
 @ApiTags('posts')
 export class PostController {
-  constructor(private postService: PostService) {}
+  constructor(private readonly postService: PostService) {}
 
   @Post()
   @Auth([RoleType.USER])
@@ -52,7 +51,6 @@ export class PostController {
 
   @Get()
   @Auth([RoleType.USER])
-  @UseLanguageInterceptor()
   @ApiPageResponse({ type: PostDto })
   async getPosts(
     @Query() postsPageOptionsDto: PostPageOptionsDto,
