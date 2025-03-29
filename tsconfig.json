@@ -2,11 +2,13 @@
   "compilerOptions": {
     "module": "ESNext",
     "lib": ["ESNext"],
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "declaration": true,
     "noImplicitAny": true,
     "removeComments": true,
     "skipLibCheck": true,
+    "allowJs": true,
+    "moduleDetection": "force",
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "importHelpers": true,
@@ -21,11 +23,9 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "isolatedModules": true,
-//    "exactOptionalPropertyTypes": true,
     "noImplicitThis": true,
-//    "noPropertyAccessFromIndexSignature": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     "strictPropertyInitialization": true,
     "target": "ESNext",
     "noFallthroughCasesInSwitch": true,
@@ -45,6 +45,9 @@
 },
   "include": [
     "src/**/*",
+    "types.d.ts",
+    ".vuepress/**/*",
+    "ormconfig.ts"
   ],
   "exclude": [
     "node_modules",

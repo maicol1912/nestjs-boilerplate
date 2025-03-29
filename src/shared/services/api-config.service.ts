@@ -1,17 +1,14 @@
-import path from 'node:path';
-
+import path from 'path';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { ThrottlerOptions } from '@nestjs/throttler';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import parse from 'parse-duration';
-
 import { UserSubscriber } from '../../entity-subscribers/user-subscriber.ts';
 import { SnakeNamingStrategy } from '../../snake-naming.strategy.ts';
 
 @Injectable()
 export class ApiConfigService {
-  constructor(private configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {}
 
   get isDevelopment(): boolean {
     return this.nodeEnv === 'development';
@@ -35,18 +32,39 @@ export class ApiConfigService {
     }
   }
 
-  private getDuration(
-    key: string,
-    format?: Parameters<typeof parse>[1],
-  ): number {
+  private getDuration(key: string): number {
     const value = this.getString(key);
-    const duration = parse(value, format);
-
-    if (duration === null) {
+    const regex = /(\d+)([smhd])/g;
+    let match;
+    let totalSeconds = 0;
+  
+    while ((match = regex.exec(value)) !== null) {
+        const quantity = match[1] !== undefined ? parseInt(match[1], 10) : 0;
+      const unit = match[2];
+  
+      switch (unit) {
+        case 's':
+          totalSeconds += quantity;
+          break;
+        case 'm':
+          totalSeconds += quantity * 60;
+          break;
+        case 'h':
+          totalSeconds += quantity * 3600;
+          break;
+        case 'd':
+          totalSeconds += quantity * 86400;
+          break;
+        default:
+          throw new Error(`Unidad de tiempo no reconocida: ${unit}`);
+      }
+    }
+  
+    if (totalSeconds === 0) {
       throw new Error(`${key} environment variable is not a valid duration`);
     }
-
-    return duration;
+  
+    return totalSeconds;
   }
 
   private getBoolean(key: string): boolean {
@@ -75,7 +93,7 @@ export class ApiConfigService {
 
   get throttlerConfigs(): ThrottlerOptions {
     return {
-      ttl: this.getDuration('THROTTLER_TTL', 'second'),
+      ttl: this.getDuration('THROTTLER_TTL'),
       limit: this.getNumber('THROTTLER_LIMIT'),
       // storage: new ThrottlerStorageRedisService(new Redis(this.redis)),
     };
@@ -83,12 +101,12 @@ export class ApiConfigService {
 
   get postgresConfig(): TypeOrmModuleOptions {
     const entities = [
-      path.join(import.meta.dirname, `../../modules/**/*.entity{.ts,.js}`),
-      path.join(import.meta.dirname, `../../modules/**/*.view-entity{.ts,.js}`),
-    ];
-    const migrations = [
-      path.join(import.meta.dirname, `../../database/migrations/*{.ts,.js}`),
-    ];
+        path.join(__dirname, '../../modules/**/*.entity{.ts,.js}'),
+        path.join(__dirname, '../../modules/**/*.view-entity{.ts,.js}'),
+      ];
+      const migrations = [
+        path.join(__dirname, '../../database/migrations/*{.ts,.js}'),
+      ];
 
     return {
       entities,

@@ -1,10 +1,10 @@
-import './src/boilerplate.polyfill';
+import './src/boilerplate.polyfill.ts';
 
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 
-import { UserSubscriber } from './src/entity-subscribers/user-subscriber';
-import { SnakeNamingStrategy } from './src/snake-naming.strategy';
+import { UserSubscriber } from './src/entity-subscribers/user-subscriber.ts';
+import { SnakeNamingStrategy } from './src/snake-naming.strategy.ts';
 
 dotenv.config();
 

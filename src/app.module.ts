@@ -58,7 +58,6 @@ import { SharedModule } from './shared/shared.module.ts';
         );
       },
     }),
-    // eslint-disable-next-line canonical/id-match
     I18nModule.forRootAsync({
       useFactory: (configService: ApiConfigService) => ({
         fallbackLanguage: configService.fallbackLanguage,

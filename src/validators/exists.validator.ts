@@ -8,9 +8,6 @@ import { registerDecorator, ValidatorConstraint } from 'class-validator';
 import type { EntitySchema, FindOptionsWhere, ObjectType } from 'typeorm';
 import { DataSource } from 'typeorm';
 
-/**
- * @deprecated Don't use this validator until it's fixed in NestJS
- */
 @ValidatorConstraint({ name: 'exists', async: true })
 export class ExistsValidator implements ValidatorConstraintInterface {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
@@ -29,9 +26,7 @@ export class ExistsValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments): string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const [entityClass] = args.constraints;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
     const entity = entityClass.name ?? 'Entity';
 
     return `The selected ${args.property}  does not exist in ${entity} entity`;

@@ -8,9 +8,6 @@ import { registerDecorator, ValidatorConstraint } from 'class-validator';
 import type { EntitySchema, FindOptionsWhere, ObjectType } from 'typeorm';
 import { DataSource } from 'typeorm';
 
-/**
- * @deprecated Don't use this validator until it's fixed in NestJS
- */
 @ValidatorConstraint({ name: 'unique', async: true })
 export class UniqueValidator implements ValidatorConstraintInterface {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
@@ -29,9 +26,8 @@ export class UniqueValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments): string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const [entityClass] = args.constraints;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+
     const entity = entityClass.name || 'Entity';
 
     return `${entity} with the same ${args.property} already exists`;
