@@ -2,9 +2,7 @@
   "name": "awesome-nestjs-boilerplate",
   "version": "11.0.0",
   "description": "Awesome NestJS Boilerplate, Typescript, Postgres, TypeORM",
-  "author": "Narek Hakobyan <narek.hakobyan.07@gmail.com>",
   "private": true,
-  "license": "MIT",
   "type": "module",
   "scripts": {
     "build:prod": "nest build",
@@ -35,7 +33,8 @@
     "docs:build": "cross-env DEPLOY_ENV=gh-pages vuepress build",
     "docs:deploy": "yarn docs:build && gh-pages -d .vuepress/dist",
     "prepare": "husky",
-    "release": "release-it"
+    "release": "release-it",
+    "commit": "git-cz"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.750.0",
@@ -51,11 +50,14 @@
     "@nestjs/terminus": "^11.0.0",
     "@nestjs/throttler": "^6.4.0",
     "@nestjs/typeorm": "^11.0.0",
+    "awesome-nestjs-boilerplate": "file:",
     "bcrypt": "^5.1.1",
     "class-transformer": "~0.5.1",
     "class-validator": "~0.14.1",
+    "commitizen": "^4.3.1",
     "compression": "^1.8.0",
     "express": "^5.0.1",
+    "git-cz": "^4.9.0",
     "helmet": "^8.0.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
@@ -149,5 +151,10 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  }
 }

@@ -57,7 +57,7 @@ typings/
 .yarn-integrity
 yarn.lock
 package-lock.json
-
+bun.lock
 # dotenv environment variables file
 .env
 
