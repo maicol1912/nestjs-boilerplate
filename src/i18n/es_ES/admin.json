@@ -1,0 +1,6 @@
+{
+    "keywords": {
+        "admin": "Administrator"
+    },
+    "Welcome": "Hola bienvenido  {{name}}"
+}

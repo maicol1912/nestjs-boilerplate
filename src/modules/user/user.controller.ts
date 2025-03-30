@@ -24,9 +24,23 @@ import { UserService } from './user.service.ts';
 @ApiTags('users')
 export class UserController {
   constructor(
-    private userService: UserService,
+    private readonly userService: UserService,
     private readonly translationService: TranslationService,
   ) {}
+
+  @Get('test')
+  @HttpCode(HttpStatus.OK)
+  @UseLanguageInterceptor()
+  async test() {
+    const translation = await this.translationService.translate(
+      'admin.Welcome',
+      { args: { name: 'MAICOL ARCILA' }}
+    );
+
+    return {
+      text: `${translation}`,
+    };
+  }
 
   @Get('admin')
   @Auth([RoleType.USER])
