@@ -2,5 +2,5 @@
     "keywords": {
         "admin": "Administrator"
     },
-    "Welcome": "Hola bienvenido  {{name}}"
+    "Welcome": "Hola bienvenido {name}"
 }
