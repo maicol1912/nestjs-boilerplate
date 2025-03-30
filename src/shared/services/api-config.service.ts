@@ -5,7 +5,10 @@ import type { ThrottlerOptions } from '@nestjs/throttler';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserSubscriber } from '../../entity-subscribers/user-subscriber.ts';
 import { SnakeNamingStrategy } from '../../snake-naming.strategy.ts';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 @Injectable()
 export class ApiConfigService {
   constructor(private readonly configService: ConfigService) {}
@@ -80,7 +83,7 @@ export class ApiConfigService {
   private getString(key: string): string {
     const value = this.get(key);
 
-    return value.replaceAll(String.raw`\n`, '\n');
+    return String(value).replace(/\\n/g, '\n');
   }
 
   get nodeEnv(): string {
